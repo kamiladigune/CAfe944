@@ -1,0 +1,40 @@
+Cafe94/
+└── src/
+    └── main/
+        └── java/
+            └── com/
+                └── cafe94/
+                    ├── domain/
+                    │   ├── User.java
+                    │   ├── Staff.java
+                    │   ├── Customer.java
+                    │   ├── Manager.java
+                    │   ├── Chef.java
+                    │   ├── Waiter.java
+                    │   ├── Driver.java
+                    │   ├── Item.java
+                    │   ├── Menu.java
+                    │   ├── Order.java
+                    │   ├── DeliveryOrder.java
+                    │   ├── EatInOrder.java
+                    │   ├── Table.java
+                    │   └── Booking.java
+                    │
+                    └── enums/
+                        ├── UserRole.java
+                        ├── OrderStatus.java
+                        ├── TableStatus.java
+                        └── BookingStatus.java
+
+                    // Implicitly:
+                    // ├── services/
+                    // ├── persistence/ (or repositories/)
+                    // ├── controllers/ (or ui/)
+                    // └── util/
+    └── test/  // Standard location for tests
+        └── java/
+            └── com/
+                └── cafe94/
+                    ├── domain/
+                    │   └── UserTest.java // Example test location
+                    // etc.
