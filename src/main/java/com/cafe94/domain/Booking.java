@@ -37,14 +37,14 @@ public class Booking implements Serializable {
      * @param bookingTime    Time of booking.
      * @param numberOfGuests Number of guests.
      * @param initialStatus  Initial status.
-     * @throws NullPointerException     if bookingDate, bookingTime,
-     *                                  or initialStatus is null.
+     * @throws NullPointerException if bookingDate, bookingTime,
+     * or initialStatus is null.
      * @throws IllegalArgumentException if customerID or numberOfGuests is not
-     *                                  positive.
+     * positive.
      */
     public Booking(int bookingID, int customerID, LocalDate bookingDate,
                    LocalTime bookingTime, int numberOfGuests,
-                   BookingStatus initialStatus) {
+                   BookingStatus initialStatus, String notes) {
 
         // Validate required parameters immediately
         Objects.requireNonNull(bookingDate, "Booking date cannot be null.");

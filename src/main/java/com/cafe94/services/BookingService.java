@@ -79,7 +79,7 @@ public class BookingService implements IBookingService {
     @Override
     // Added Duration parameter to match interface
     public Booking requestBooking(int customerId, int numberOfGuests,
-    LocalDate date, LocalTime time, Duration duration) {
+    LocalDate date, LocalTime time, Duration duration, String notes) {
         // Validate Inputs
         Objects.requireNonNull(date, "Booking date cannot be null.");
         Objects.requireNonNull(time, "Booking time cannot be null.");
@@ -107,7 +107,7 @@ public class BookingService implements IBookingService {
 
         // Create Booking entity in PENDING state
         Booking newBooking = new Booking(0, customerId, date, time,
-        numberOfGuests, BookingStatus.PENDING_APPROVAL);
+        numberOfGuests, BookingStatus.PENDING_APPROVAL, notes);
     
 
         // Save Booking Request
