@@ -26,6 +26,7 @@ public class Booking implements Serializable {
     private int numberOfGuests;
     private BookingStatus status;
     private final LocalDateTime creationTimestamp;
+    private final String notes;
 
 
     /**
@@ -37,6 +38,7 @@ public class Booking implements Serializable {
      * @param bookingTime    Time of booking.
      * @param numberOfGuests Number of guests.
      * @param initialStatus  Initial status.
+     * @param @param notes  Optional notes from the customer
      * @throws NullPointerException if bookingDate, bookingTime,
      * or initialStatus is null.
      * @throws IllegalArgumentException if customerID or numberOfGuests is not
