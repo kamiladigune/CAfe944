@@ -25,6 +25,7 @@ public interface IBookingService {
      * @param time           The desired time for the booking
      * @param numberOfGuests The number of guests for the booking
      * @param duration       The desired duration for the booking
+     * @param notes          Optional notes from the customer
      * @return The newly created {@link Booking} object in
      * PENDING_APPROVAL status.
      * @throws IllegalArgumentException if inputs are invalid
@@ -33,7 +34,7 @@ public interface IBookingService {
      */
     // Corrected signature to include Duration
     Booking requestBooking(int customerId, int numberOfGuests,
-    LocalDate date, LocalTime time, Duration duration);
+    LocalDate date, LocalTime time, Duration duration, String notes);
 
     /**
      * Approves a pending booking request
