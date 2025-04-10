@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/permissions/PermissionLoader.java
 package com.cafe94.permission;
 
 import java.util.Collections;
