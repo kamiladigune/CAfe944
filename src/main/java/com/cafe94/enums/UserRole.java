@@ -7,7 +7,11 @@ package com.cafe94.enums;
  * @version 1.0
  */
 public enum UserRole {
-    MANAGER, CHEF, WAITER, DRIVER, CUSTOMER;
+    MANAGER,
+    CHEF,
+    WAITER,
+    DRIVER,
+    CUSTOMER;
 
     /** Checks if this role is a staff role.
      * @return true if the role is correct, otherwise false

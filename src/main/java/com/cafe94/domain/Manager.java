@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/domain/Manager.java
 package com.cafe94.domain;
 
 import java.io.Serializable;
