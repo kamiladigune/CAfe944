@@ -1,3 +1,4 @@
+
 package com.cafe94.permission;
 
 import java.util.Collections;
@@ -11,7 +12,12 @@ import java.util.logging.Logger;
 import com.cafe94.enums.Permission;
 import static com.cafe94.enums.Permission.*;
 import com.cafe94.enums.UserRole;
-import static com.cafe94.enums.UserRole.*;
+import static com.cafe94.enums.UserRole.CHEF;
+import static com.cafe94.enums.UserRole.CUSTOMER;
+import static com.cafe94.enums.UserRole.DRIVER;
+import static com.cafe94.enums.UserRole.MANAGER;
+import static com.cafe94.enums.UserRole.WAITER;
+
 /**
  * Loads and provides statically defined permissions
  * associated with each {@link UserRole}.

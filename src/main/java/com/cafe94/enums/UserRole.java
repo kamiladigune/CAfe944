@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/enums/UserRole.java
 package com.cafe94.enums;
 
 /**

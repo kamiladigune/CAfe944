@@ -1,7 +1,4 @@
-// File: src/main/java/com/cafe94/domain/Waiter.java
 package com.cafe94.domain;
-
-import java.io.Serializable;
 
 import com.cafe94.enums.UserRole;
 
@@ -11,7 +8,7 @@ import com.cafe94.enums.UserRole;
  * @author Adigun Lateef
  * @version 1.0
  */
-public class Waiter extends Staff implements Serializable {
+public class Waiter extends Staff {
 
     private static final long serialVersionUID = 1L;
 

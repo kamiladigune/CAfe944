@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/util/ConsoleNotificationService.java
 package com.cafe94.util;
  
 import java.time.format.DateTimeFormatter;

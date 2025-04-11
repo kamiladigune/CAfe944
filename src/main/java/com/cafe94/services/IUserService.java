@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/services/IUserService.java
 package com.cafe94.services;
 
 import java.util.List;

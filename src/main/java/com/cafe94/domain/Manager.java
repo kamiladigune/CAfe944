@@ -1,6 +1,5 @@
-package com.cafe94.domain;
 
-import java.io.Serializable;
+package com.cafe94.domain;
 
 import com.cafe94.enums.UserRole;
 
@@ -8,7 +7,7 @@ import com.cafe94.enums.UserRole;
  * Represents a Manager user in the Cafe94 system.
  * This is a concrete class inheriting properties from {@link Staff}
  */
-public class Manager extends Staff implements Serializable {
+public class Manager extends Staff {
     private static final long serialVersionUID = 1L;
 
     /**

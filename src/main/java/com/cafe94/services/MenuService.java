@@ -1,164 +1,183 @@
-// File: src/main/java/com/cafe94/services/MenuService.java
 package com.cafe94.services;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import com.cafe94.domain.Item;
 import com.cafe94.domain.User;
 import static com.cafe94.enums.Permission.MANAGE_MENU_ITEMS;
 import static com.cafe94.enums.Permission.SET_DAILY_SPECIAL;
 import com.cafe94.persistence.IMenuRepository;
+import com.cafe94.util.ValidationUtils;
 
 /**
- * Implementation of IMenuService for managing menu items
- *@author Adigun LAteef
- @version 1.o
+ * Implementation of IMenuService for managing menu items.
+ * @author Adigun Lateef
+ * @version 1.1
  */
 public class MenuService implements IMenuService {
+
+    private static final Logger LOGGER =
+        Logger.getLogger(MenuService.class.getName());
 
     private final IMenuRepository menuRepository;
     private final AuthorizationService authService;
 
-    /**
-     * Constructor for Dependency Injection.
-     * @param menuRepository Repository for accessing item data
-     * @param authService    Service for checking user permissions
-     */
+    private Item transientDailySpecial = null;
+
+    /** Constructor for Dependency Injection. */
     public MenuService(IMenuRepository menuRepository,
-    AuthorizationService authService) {
-        this.menuRepository = Objects.requireNonNull(menuRepository,
-        "MenuRepository cannot be null.");
-        this.authService = Objects.requireNonNull(authService,
-        "AuthorizationService cannot be null.");
+                       AuthorizationService authService) {
+        this.menuRepository = Objects.requireNonNull(menuRepository);
+        this.authService = Objects.requireNonNull(authService);
     }
 
-
     @Override
-    public Item addItem(String name, String category, String description,
-    double price, List<String> allergens, User staffMember) {
-        // Authorization Check
+    public Item addItem(String name, String category, double price,
+    User staffMember) {
         authService.checkPermission(staffMember, MANAGE_MENU_ITEMS);
-
-        // Create new Item object
         Item newItem = new Item(0, name, category, price,
         false);
-        // Persist via Repository
         Item savedItem = menuRepository.save(newItem);
-        System.out.println("INFO: Staff " + staffMember.getUserID() +
-        " added new item: " + savedItem);
-        // Check if save was successful
+        LOGGER.log(Level.INFO, "Staff {0} added new item: {1}",
+                   new Object[]{staffMember.getUserID(), savedItem});
         if (savedItem == null || savedItem.getItemID() <= 0) {
-            System.err.println(
-                "ERROR: Failed to save new item or retrieve valid ID.");
-            // Throw exception or handle error
-            throw new RuntimeException("Failed to save new menu item: "
-            + name);
+            LOGGER.log(Level.SEVERE,
+                       "Failed to save new item or retrieve valid ID.");
+            throw new RuntimeException("Failed save new menu item: " + name);
         }
-
         return savedItem;
     }
 
     @Override
     public Item updateItem(int itemId, String name, String category,
-    String description, double price, List<String> allergens,
-    boolean isSpecial, User staffMember) {
-        // Authorization Check
+    double price, boolean isSpecial, User staffMember) {
         authService.checkPermission(staffMember, MANAGE_MENU_ITEMS);
-
-        // Find existing item or throw error
         Item itemToUpdate = findItemByIdOrThrow(itemId);
-
-        // Update item properties using setters
+        // Update properties
         itemToUpdate.setName(name);
         itemToUpdate.setCategory(category);
         itemToUpdate.setPrice(price);
         itemToUpdate.setDailySpecial(isSpecial);
-
-        // Persist changes
         Item updatedItem = menuRepository.save(itemToUpdate);
-        System.out.println("INFO: Staff " + staffMember.getUserID()
-        + " updated item: " + updatedItem);
-
+        LOGGER.log(Level.INFO, "Staff {0} updated item: {1}",
+                   new Object[]{staffMember.getUserID(), updatedItem});
         return updatedItem;
     }
 
     @Override
     public boolean removeItem(int itemId, User staffMember) {
-        // Authorization Check
         authService.checkPermission(staffMember, MANAGE_MENU_ITEMS);
-
-        // Attempt deletion via repository
         boolean deleted = menuRepository.deleteById(itemId);
-
         if (deleted) {
-            System.out.println("INFO: Staff " + staffMember.getUserID() +
-            " removed item with ID: " + itemId);
+            LOGGER.log(Level.INFO, "Staff {0} removed item ID: {1}",
+                       new Object[]{staffMember.getUserID(), itemId});
+            if (transientDailySpecial != null &&
+                transientDailySpecial.getItemID() == itemId) {
+                transientDailySpecial = null;
+            }
         } else {
-             System.err.println("WARN: Staff " + staffMember.getUserID() +
-             " - Failed to remove item ID: " + itemId +
-             " (Not found or DB error?).");
+             LOGGER.log(Level.WARNING, "Staff {0} failed remove item {1}",
+                        new Object[]{staffMember.getUserID(), itemId});
         }
         return deleted;
     }
 
+    private void clearAllExistingSpecials(User staffMember) {
+         LOGGER.log(Level.FINE, "Clearing existing daily specials.");
+         // Clear persisted specials
+         List<Item> currentSpecials = menuRepository.findDailySpecials();
+         for (Item item : currentSpecials) {
+             if (item.isDailySpecial()) {
+                 item.setDailySpecial(false);
+                 // Persist the change
+                 menuRepository.save(item);
+                 LOGGER.log(Level.FINER, "Cleared special status for " +
+                     "persisted item ID: {0}", item.getItemID());
+             }
+         }l;
+    }
+
     @Override
     public Item setDailySpecial(int itemId, User staffMember) {
-        // Authorization Check
         authService.checkPermission(staffMember, SET_DAILY_SPECIAL);
-
-        // Find item
         Item item = findItemByIdOrThrow(itemId);
-
-        // Set special status and save (if not already set)
-        if (!item.isDailySpecial()) {
-            item.setDailySpecial(true);
-            Item updatedItem = menuRepository.save(item);
-            System.out.println("INFO: Staff " + staffMember.getUserID() +
-            " set item as daily special: " + updatedItem);
-            
-            return updatedItem;
-        } else {
-            System.out.println("INFO: Item ID " + itemId +
-            " was already marked as special.");
-            return item;
-        }
+        clearAllExistingSpecials(staffMember);
+        item.setDailySpecial(true);
+        Item updatedItem = menuRepository.save(item);
+        LOGGER.log(Level.INFO, "Staff {0} set existing item as special: {1}",
+                   new Object[]{staffMember.getUserID(), updatedItem});
+        return updatedItem;
     }
 
     @Override
     public Item clearDailySpecial(int itemId, User staffMember) {
-        // Authorization Check
-         authService.checkPermission(staffMember, SET_DAILY_SPECIAL);
-
-        // Find item
+        authService.checkPermission(staffMember, SET_DAILY_SPECIAL);
         Item item = findItemByIdOrThrow(itemId);
-
-        // Clear status if set and save
         if (item.isDailySpecial()) {
             item.setDailySpecial(false);
             Item updatedItem = menuRepository.save(item);
-            System.out.println("INFO: Staff " + staffMember.getUserID() +
-            " cleared daily special status for item: " + updatedItem);
+             LOGGER.log(Level.INFO, "Staff {0} cleared special status " +
+                        "for item: {1}",
+                        new Object[]{staffMember.getUserID(), updatedItem});
             return updatedItem;
-        } else {
-            System.out.println("INFO: Item ID " + itemId +
-            " was already not marked as special.");
-            return item;
         }
+         if (transientDailySpecial != null &&
+             transientDailySpecial.getItemID() == itemId) {
+             transientDailySpecial = null;
+             LOGGER.log(Level.INFO, "Cleared transient daily special.");
+             return item;
+         }
+
+        LOGGER.log(Level.INFO, "Item ID {0} was not marked as special.",
+                   itemId);
+        return item;
+    }
+
+    // New Placeholder Method Implementation
+    @Override
+    public Item setNewCreationAsSpecial(String name, String description,
+                                        double price, User staffMember) {
+        authService.checkPermission(staffMember, SET_DAILY_SPECIAL);
+        ValidationUtils.requireNonBlank(name, "Special name");
+        ValidationUtils.requireNonNegative(price, "Special price");
+
+        // Clear any existing specials first
+        clearAllExistingSpecials(staffMember);
+
+        Item newSpecial = new Item(0, name, "Daily Special",
+        price, true);
+
+        transientDailySpecial = newSpecial;
+
+        LOGGER.log(Level.INFO, "Staff {0} set NEW CREATION as " +
+                   "transient special: {1}",
+                   new Object[]{staffMember.getUserID(), newSpecial});
+        LOGGER.log(Level.WARNING, "Newly created special '{0}' is " +
+                   "TRANSIENT - it is NOT saved permanently in the menu " +
+                   "and may not appear correctly in all views.", name);
+
+        return transientDailySpecial;
     }
 
 
+    // Retrieval Methods
     @Override
     public Optional<Item> getItemById(int itemId) {
-        if (itemId <= 0) {
-             System.err.println("WARN: getItemById called with invalid ID: "
-             + itemId);
+         if (itemId <= 0) {
+             if (transientDailySpecial != null &&
+                 transientDailySpecial.getItemID() == itemId) {
+                 return Optional.of(transientDailySpecial);
+             }
+             LOGGER.log(Level.FINER,
+                 "getItemById called with invalid/temp ID: {0}", itemId);
              return Optional.empty();
-        }
+         }
         return menuRepository.findById(itemId);
     }
 
@@ -170,50 +189,37 @@ public class MenuService implements IMenuService {
     @Override
     public List<Item> getItemsByCategory(String category) {
         if (category == null || category.trim().isEmpty()) {
-            System.out.println(
-                "WARN: getItemsByCategory called with null or blank " +
-                "category.");
-            return Arrays.asList();
+             return Collections.emptyList();
         }
         return menuRepository.findByCategory(category);
     }
 
     @Override
     public List<String> getAllCategories() {
-        List<String> categories = menuRepository.findDistinctCategories();
-        if (categories != null && !categories.isEmpty()) {
-            return categories;
-        } else {
-            // Fallback if repo method doesn't exist or fails
-            System.out.println(
-                "WARN: Falling back to retrieving all items to " +
-                "determine categories.");
-            List<Item> allItems = menuRepository.findAll();
-            if (allItems == null || allItems.isEmpty()) {
-                return Arrays.asList();
-            }
-            return allItems.stream()
-                    .map(Item::getCategory)
-                    .filter(Objects::nonNull)
-                    .filter(cat -> !cat.trim().isEmpty())
-                    .distinct()
-                    .sorted(String.CASE_INSENSITIVE_ORDER)
-                    .collect(Collectors.toList());
-        }
+        return menuRepository.findDistinctCategories();
     }
 
     @Override
     public List<Item> getDailySpecials() {
-        return menuRepository.findDailySpecials();
+        List<Item> specials = new ArrayList<>(
+            menuRepository.findDailySpecials()
+        );
+        if (transientDailySpecial != null) {
+             if (specials.stream().noneMatch(
+                 item -> item.getItemID() == transientDailySpecial.getItemID()
+                )) {
+                 specials.add(transientDailySpecial);
+             }
+        }
+        // Return combined list
+        return specials;
     }
 
-    /** Finds an item by ID or throws NoSuchElementException if not found. */
+    /** Finds item by ID or throws NoSuchElementException. */
     private Item findItemByIdOrThrow(int itemId) {
-        if (itemId <= 0) throw new IllegalArgumentException(
-            "Item ID must be positive.");
-        // Calls repo findById
-        return menuRepository.findById(itemId)
+        return getItemById(itemId)
                .orElseThrow(() -> new NoSuchElementException(
-                "Item not found: " + itemId));
+                   "Item not found with ID: " + itemId));
     }
+
 }

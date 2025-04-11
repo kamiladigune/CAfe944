@@ -1,6 +1,4 @@
 package com.cafe94.domain;
-
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -15,7 +13,7 @@ import com.cafe94.enums.OrderStatus;
  * @author  Adigun Lateef
  * @version 1.0
  */
-public class EatIn extends Order implements Serializable {
+public class EatIn extends Order {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(EatIn.class.getName());
     private int tableNumber;

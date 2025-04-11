@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/services/IMenuService.java
 package com.cafe94.services;
 
 import java.util.List;
@@ -9,122 +8,79 @@ import com.cafe94.domain.User;
 
 /**
  * Interface defining business logic operations related to managing the
- * restaurant menu
+ * restaurant menu.
  * @author Adigun Lateef
+ * @version 1.1
  */
 public interface IMenuService {
 
-   
     /**
-     * Adds a new item to the menu
-     *
-     * @param name        The name of the new item
-     * @param category    The category of the new item
-     * @param description A description of the item
-     * @param price       The price of the item
-     * @param staffMember The staff member performing the action
-     * @return The newly created and persisted {@link Item}.
-     * @throws SecurityException if staffMember lacks the required permission.
-     * @throws IllegalArgumentException if input parameters are invalid
+     * Adds a new permanent item to the menu
+     * @param category Item category.
+     * @param description Item description.
+     * @param price Item price.
+     * @param allergens List of allergens
+     * @param staffMember Staff performing action.
+     * @return The saved Item.
      */
-    Item addItem(String name, String category, String description,
-    double price, List<String> allergens, User staffMember);
+    Item addItem(String name, String category,
+                 double price, User staffMember);
 
     /**
-     * Updates an existing menu item identified by its ID
-     *
-     * @param itemId      The unique ID of the item to update
-     * @param name        The updated name
-     * @param category    The updated category
-     * @param description The updated description
-     * @param price       The updated price
-     * @param isSpecial   The updated daily special status (true if special,
-     * false otherwise).
-     * @param staffMember The staff member performing the action
-     * @return The updated and persisted {@link Item}
-     * @throws SecurityException if staffMember lacks the required permission
-     * @throws java.util.NoSuchElementException if no item is found with the
-     * given itemId
-     * @throws IllegalArgumentException if other input parameters are invalid
+     * Updates an existing menu item
+     * @param itemId ID of item to update.
+     * @param name Updated name.
+     * @param category Updated category
+     * @param price Updated price
+     * @param isSpecial Updated special status.
+     * @param staffMember Staff performing action.
+     * @return The updated Item.
      */
-    Item updateItem(int itemId, String name, String category,
-    String description, double price, List<String> allergens,
+    Item updateItem(int itemId, String name, String category, double price,
     boolean isSpecial, User staffMember);
 
     /**
-     * Removes an item from the menu based on its ID
-     *
-     * @param itemId      The unique ID of the item to remove
-     * @param staffMember The staff member performing the action
-     * @return {@code true} if the item was successfully found and removed,
-     * {@code false} otherwise
-     * @throws SecurityException if staffMember lacks the required permission
+     * Removes an item permanently from the menu
+     * @param itemId ID of item to remove.
+     * @param staffMember Staff performing action.
+     * @return true if successful, false otherwise.
      */
     boolean removeItem(int itemId, User staffMember);
 
     /**
-     * Sets a specific menu item as a daily special
-     *
-     * @param itemId      The unique ID of the item to mark as special
-     * @param staffMember The staff member performing the action
-     * @return The updated {@link Item} marked as special. If the item was
-     * already special, returns the unchanged item.
-     * @throws SecurityException if staffMember lacks the required permission.
-     * @throws java.util.NoSuchElementException if no item is found with the
-     * given itemId
+     * Sets an existing menu item as a daily special.
+     * @param itemId ID of item to mark as special.
+     * @param staffMember Staff performing action.
+     * @return The updated Item.
      */
     Item setDailySpecial(int itemId, User staffMember);
 
     /**
-     * Clears the daily special status for a specific menu item
-     * @param itemId      The unique ID of the item to mark as special
-     * @param staffMember The staff member performing the action
-     * @return The updated {@link Item} with the special status cleared
-     * @throws SecurityException if staffMember lacks the required permission.
-     * @throws java.util.NoSuchElementException if no item is found with the
-     * given itemId
+     * Clears the daily special status for an existing menu item
+     * @param itemId ID of item to clear special status from.
+     * @param staffMember Staff performing action.
+     * @return The updated Item.
      */
     Item clearDailySpecial(int itemId, User staffMember);
 
     /**
-     * Retrieves a specific menu item by its unique ID.
-     *
-     * @param itemId The unique ID of the item to retrieve
-     * @return An {@code Optional<Item>} containing the Item if found,
-     * otherwise an empty Optional snd returns empty Optional if
-     * itemId is not positive.
+     * Handles setting a new creation
+     * as the daily special
+     * @param name Name of the new special.
+     * @param description Description of the new special.
+     * @param price Price of the new special.
+     * @param staffMember Staff performing the action (Chef).
+     * @return A transient Item object representing the new special.
      */
+    Item setNewCreationAsSpecial(String name, String description,
+                                 double price, User staffMember);
+
+
+    // Retrieval Methods
     Optional<Item> getItemById(int itemId);
-
-    /**
-     * Retrieves a list of all items currently available on the menu
-     * @return A {@code List<Item>} containing all menu items and
-     * returns an empty list if the menu is empty.
-     */
     List<Item> getAllItems();
-
-    /**
-     * Retrieves all menu items belonging to a specific category
-     *
-     * @param category The category name to filter by
-     * @return A {@code List<Item>} containing items matching the category
-     * Returns an empty list if the category is null/blank or no items match.
-     */
     List<Item> getItemsByCategory(String category);
-
-    /**
-     * Retrieves a distinct list of all category names currently represented
-     * in the menu
-     * @return A sorted {@code List<String>} of unique category names abd
-     * returns an empty list if the menu is empty or has no categories
-     */
     List<String> getAllCategories();
-
-    /**
-     * Retrieves a list of all menu items currently marked as daily specials
-     * @return A {@code List<Item>} containing items marked as daily specials
-     * and returns an empty list if no items are marked as special.
-     */
     List<Item> getDailySpecials();
 
 }

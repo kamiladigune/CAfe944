@@ -1,6 +1,4 @@
 package com.cafe94.domain;
-
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -17,7 +15,7 @@ import com.cafe94.util.ValidationUtils;
  * @author Adigun Lateef
  * @version 1.0
  */
-public class Delivery extends Order implements Serializable {
+public class Delivery extends Order {
 
     private static final long serialVersionUID = 1L;
 

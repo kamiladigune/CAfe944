@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/util/PasswordHasher.java
 package com.cafe94.util;
 
 /**

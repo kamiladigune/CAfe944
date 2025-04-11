@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/services/INotificationService.java
 package com.cafe94.services;
 
 import com.cafe94.domain.Booking;

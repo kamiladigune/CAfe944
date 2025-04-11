@@ -1,4 +1,4 @@
-// File: src/main/java/com/cafe94/domain/Order.java
+
 package com.cafe94.domain;
 
 import java.io.Serializable;

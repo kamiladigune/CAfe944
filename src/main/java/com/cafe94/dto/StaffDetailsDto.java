@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/dto/StaffDetailsDto.java
 package com.cafe94.dto;
 
 import java.io.Serializable;

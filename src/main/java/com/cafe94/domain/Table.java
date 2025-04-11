@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/domain/Table.java
 package com.cafe94.domain;
 
 import java.io.Serializable;
@@ -128,7 +127,6 @@ public class Table implements Serializable {
          } else switch (this.status) {
             case OCCUPIED:
             case RESERVED:
-            case UNAVAILABLE:
                 setStatusInternal(TableStatus.AVAILABLE);
                 break;
             case AVAILABLE:
@@ -141,20 +139,6 @@ public class Table implements Serializable {
                 "when trying to make table {1} available.",
                 new Object[]{this.status, this.tableNumber});
                 throw new IllegalStateException("Cannot make table available from status: " + this.status);
-        }
-    }
-
-     /**
-     * Marks the table as UNAVAILABLE
-     * @throws IllegalStateException if the table is not currently AVAILABLE.
-     */
-    public void markUnavailable() {
-        if (this.status == TableStatus.AVAILABLE) {
-            setStatusInternal(TableStatus.UNAVAILABLE);
-        } else {
-            throw new IllegalStateException("Table " + tableNumber +
-            " cannot be marked unavailable from status: " +
-            this.status + ". Must be AVAILABLE.");
         }
     }
 

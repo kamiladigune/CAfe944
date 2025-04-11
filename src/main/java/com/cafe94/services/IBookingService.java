@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/services/IBookingService.java
 package com.cafe94.services;
 
 import java.time.Duration;
@@ -9,6 +8,7 @@ import java.util.Optional;
 
 import com.cafe94.domain.Booking;
 import com.cafe94.domain.User;
+import com.cafe94.enums.BookingStatus;
 
 /**
  * Interface defining operations related to managing customer bookings
@@ -118,4 +118,16 @@ public interface IBookingService {
      * exist for that date.
      */
     List<Booking> getBookingsByDate(LocalDate date);
+
+    /**
+     * Finds all bookings currently matching the specified status.
+     * Results are potentially sorted (e.g., chronologically).
+     *
+     * @param status The {@link BookingStatus} to filter by (non-null).
+     * @return A {@code List<Booking>} containing all bookings with the
+     * specified status. Returns an empty list if the status is null or
+     * no bookings match.
+     * @throws NullPointerException if the status parameter is null.
+     */
+    List<Booking> getBookingByStatus(BookingStatus status);
 }

@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/util/ValidationUtils.java
 package com.cafe94.util;
 
 import java.util.Collections;

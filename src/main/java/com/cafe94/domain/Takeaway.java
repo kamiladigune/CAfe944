@@ -1,7 +1,4 @@
-// File: src/main/java/com/cafe94/domain/Takeaway.java
 package com.cafe94.domain;
-
-import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +13,7 @@ import com.cafe94.enums.OrderStatus;
  * @author Adigun Lateef
  * @version 1.0
  */
-public class Takeaway extends Order implements Serializable {
+public class Takeaway extends Order {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER =

@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/util/SessionManager.java (Conceptual)
 package com.cafe94.util;
 
 import com.cafe94.domain.User;
@@ -23,7 +22,7 @@ public class SessionManager {
         return currentUser;
     }
 
-    protected void setCurrentUser(User currentUser) {
+    public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
         System.out.println("Session started for: " +
         (currentUser != null ? currentUser.getEmail() + " as " +

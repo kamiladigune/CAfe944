@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/services/AuthorizationService.java
 package com.cafe94.services;
 
 import java.util.Objects;

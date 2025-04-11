@@ -1,6 +1,4 @@
 package com.cafe94.domain;
-
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +13,7 @@ import com.cafe94.util.ValidationUtils;
  * @author Adigun Lateef
  * @version 1.0
  */
-public abstract class Staff extends User implements Serializable {
+public abstract class Staff extends User {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER =

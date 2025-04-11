@@ -1,6 +1,4 @@
 package com.cafe94.domain;
-
-import java.io.Serializable;
 import java.util.Objects;
 
 import com.cafe94.enums.UserRole;
@@ -12,7 +10,7 @@ import com.cafe94.util.ValidationUtils;
  * @author Adigun Lateef
  * @version 1.0
  */
-public class Customer extends User implements Serializable {
+public class Customer extends User {
 
     private static final long serialVersionUID = 1L;
 
