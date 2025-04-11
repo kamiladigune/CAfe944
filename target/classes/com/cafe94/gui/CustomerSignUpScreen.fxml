@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="CENTER" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cafe94.gui.CustomerSignUpScreen">
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+    <children>
+        <Label text="Customer Sign Up" GridPane.columnSpan="2">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+            <GridPane.margin>
+               <Insets bottom="10.0" />
+            </GridPane.margin>
+        </Label>
+        <Label text="First Name:" GridPane.rowIndex="1" />
+        <TextField fx:id="firstNameField" promptText="Enter first name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="Last Name:" GridPane.rowIndex="2" />
+        <TextField fx:id="lastNameField" promptText="Enter last name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="Email:" GridPane.rowIndex="3" />
+        <TextField fx:id="emailField" promptText="Enter email address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         <Label text="Phone (Optional):" GridPane.rowIndex="4" />
+         <TextField fx:id="phoneField" promptText="Enter phone number" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         <Label text="Address (Optional):" GridPane.rowIndex="5" />
+         <TextField fx:id="addressField" promptText="Enter address" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Label text="Password:" GridPane.rowIndex="6" />
+        <PasswordField fx:id="passwordField" promptText="Create a password" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+         <Label text="Confirm Password:" GridPane.rowIndex="7" />
+         <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+         <Label fx:id="errorLabel" textFill="RED" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="8" />
+         <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+            <children>
+                 <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#handleSignUpAction" text="Sign Up" defaultButton="true" />
+            </children>
+            <GridPane.margin>
+               <Insets top="10.0" />
+            </GridPane.margin>
+         </HBox>
+    </children>
+    <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+    </rowConstraints>
+</GridPane>

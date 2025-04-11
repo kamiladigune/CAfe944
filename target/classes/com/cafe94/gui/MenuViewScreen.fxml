@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cafe94.gui.MenuViewScreen">
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+   <top>
+      <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="titleLabel" text="Menu">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <VBox fx:id="specialDisplayBox" alignment="CENTER" managed="false" spacing="5.0" style="-fx-background-color: #FFFFE0; -fx-padding: 10px; -fx-border-color: #CCCCCC;" visible="false">
+               <children>
+                  <Label text="~~~ Daily Special ~~~" style="-fx-font-style: italic; -fx-font-weight: bold;" />
+                  <Label fx:id="specialDetailsLabel" wrapText="true" />
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="15.0" />
+         </BorderPane.margin>
+      </VBox>
+   </top>
+   <center>
+      <TableView fx:id="menuTable" BorderPane.alignment="CENTER">
+          </TableView>
+   </center>
+</BorderPane>
