@@ -1,4 +1,3 @@
-// File: src/main/java/com/cafe94/persistence/UserRepository.java
 package com.cafe94.persistence;
 
 import java.io.BufferedInputStream;
